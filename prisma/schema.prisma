@@ -30,3 +30,33 @@ model Session {
   collaborator  Boolean?  @default(false)
   emailVerified Boolean?  @default(false)
 }
+
+model WishedProducts {
+  productId     String
+  customerId    String
+  shopDomain    String
+  createdAt     DateTime  @default(now())
+  isAddedToCart Boolean
+  addToCartDate DateTime?
+  isPurchased   Boolean
+  purchaseDate  Boolean?
+
+  @@id([productId, customerId, shopDomain])
+}
+
+model WishlistButtonSettings {
+  shopDomain    String  @id
+  label         String?
+  inactiveColor String
+  activeColor   String
+  marginTop     Int     @default(0)
+  marginBottom  Int     @default(0)
+  marginLeft    Int     @default(0)
+  marginRight   Int     @default(0)
+  alignment     String // left | center | right
+}
+
+model WishlistSettings {
+  shopDomain String @id
+  format     String // list | grid
+}
