@@ -51,6 +51,10 @@ export async function action({ request, params }: ActionFunctionArgs) {
             if (Object.keys(errors).length > 0) {
                 return json({ error: 'Bad request' }, { status: 400 });
             }
+            const checkAlignmentValue = ["left", "center", "right"].includes(String(formData.get("alignment")).toLowerCase());
+            if (!checkAlignmentValue) {
+                return json({ error: 'Bad request', message: 'alignment value must be either: left, center, or right' }, { status: 400 });
+            }
 
             try {
                 const data = Object.fromEntries(formData);
@@ -64,7 +68,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
                         marginBottom: Number(data.marginBottom) || 0,
                         marginLeft: Number(data.marginLeft) || 0,
                         marginRight: Number(data.marginRight) || 0,
-                        alignment: data.alignment.toString()
+                        alignment: data.alignment.toString().toLowerCase()
                     }
                 });
                 return json({ data: wishlistBtnSettings }, { status: 201 });

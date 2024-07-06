@@ -9,7 +9,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     const { customerId } = params;
 
     if (!customerId) {
-        return json({ error: 'Bad request' }, { status: 400 });
+        return json({ error: 'Bad request', message: 'customerId URL param is required' }, { status: 400 });
     }
 
     try {
