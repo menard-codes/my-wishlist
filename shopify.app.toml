@@ -3,7 +3,7 @@
 client_id = "d4ff665f973d664e4feb2c49b8c3b1b6"
 name = "my-wishlist"
 handle = "my-wishlist-21"
-application_url = "https://nasdaq-bradley-nuts-abc.trycloudflare.com"
+application_url = "https://weight-airlines-oe-airport.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://nasdaq-bradley-nuts-abc.trycloudflare.com/auth/callback",
-  "https://nasdaq-bradley-nuts-abc.trycloudflare.com/auth/shopify/callback",
-  "https://nasdaq-bradley-nuts-abc.trycloudflare.com/api/auth/callback"
+  "https://weight-airlines-oe-airport.trycloudflare.com/auth/callback",
+  "https://weight-airlines-oe-airport.trycloudflare.com/auth/shopify/callback",
+  "https://weight-airlines-oe-airport.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
