@@ -11,7 +11,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
     switch (request.method) {
         case "POST": {
-            const errors = checkRequiredFormFields(formData, ["productId", "customerId", "shopDomain"]);
+            const {errors} = checkRequiredFormFields(formData, ["productId", "customerId", "shopDomain"]);
             if (Object.keys(errors).length > 0) {
                 return json({ errors }, { status: 400 });
             }
@@ -19,9 +19,9 @@ export async function action({ request }: ActionFunctionArgs) {
             try {
                 const wishlishtedProduct = await db.wishedProducts.create({
                     data: {
-                        productId: String(formData.get("productId")),
-                        customerId: String(formData.get("customerId")),
-                        shopDomain: String(formData.get("shopDomain")),
+                        productId: String(formData.get("productId") || ''),
+                        customerId: String(formData.get("customerId") || ''),
+                        shopDomain: String(formData.get("shopDomain") || ''),
                         isAddedToCart: false,
                         isPurchased: false
                     }
@@ -34,7 +34,7 @@ export async function action({ request }: ActionFunctionArgs) {
             }
         }
         case "DELETE": {
-            const errors = checkRequiredFormFields(formData, ["productId", "customerId", "shopDomain"]);
+            const {errors} = checkRequiredFormFields(formData, ["productId", "customerId", "shopDomain"]);
             if (Object.keys(errors).length > 0) {
                 return json({ errors }, { status: 400 });
             }
@@ -43,9 +43,9 @@ export async function action({ request }: ActionFunctionArgs) {
                 await db.wishedProducts.delete({
                     where: {
                         productId_customerId_shopDomain:{
-                            productId: String(formData.get("productId")),
-                            customerId: String(formData.get("customerId")),
-                            shopDomain: String(formData.get("shopDomain")),
+                            productId: String(formData.get("productId") || ''),
+                            customerId: String(formData.get("customerId") || ''),
+                            shopDomain: String(formData.get("shopDomain") || ''),
                         }
                     }
                 });
