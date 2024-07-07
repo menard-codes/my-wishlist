@@ -3,7 +3,7 @@
 client_id = "d4ff665f973d664e4feb2c49b8c3b1b6"
 name = "my-wishlist"
 handle = "my-wishlist-21"
-application_url = "https://weight-airlines-oe-airport.trycloudflare.com"
+application_url = "https://diy-lucas-teams-mixing.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://weight-airlines-oe-airport.trycloudflare.com/auth/callback",
-  "https://weight-airlines-oe-airport.trycloudflare.com/auth/shopify/callback",
-  "https://weight-airlines-oe-airport.trycloudflare.com/api/auth/callback"
+  "https://diy-lucas-teams-mixing.trycloudflare.com/auth/callback",
+  "https://diy-lucas-teams-mixing.trycloudflare.com/auth/shopify/callback",
+  "https://diy-lucas-teams-mixing.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

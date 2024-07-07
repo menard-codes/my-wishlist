@@ -27,6 +27,7 @@ export async function top10ConvertingWishedProducts(shopDomain: string) {
         },
         select: {
             productId: true,
+            productName: true,
             customerId: true,
             shopDomain: true,
             createdAt: true,
@@ -73,6 +74,7 @@ export async function top10MostWishedProducts(shopDomain: string) {
         },
         select: {
             productId: true,
+            productName: true,
             customerId: true,
             shopDomain: true,
             createdAt: true,
@@ -119,6 +121,7 @@ export async function top10LeastWishedProducts(shopDomain: string) {
         },
         select: {
             productId: true,
+            productName: true,
             customerId: true,
             shopDomain: true,
             createdAt: true,

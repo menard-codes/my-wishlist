@@ -1,8 +1,9 @@
-import type { LoaderFunctionArgs } from "@remix-run/node";
+import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import {
   Page,
   Text,
+  Card
 } from "@shopify/polaris";
 import { authenticate } from "../../shopify.server";
 import { useLoaderData, useRouteError } from "@remix-run/react";
@@ -11,6 +12,7 @@ import {
   top10MostWishedProducts,
   top10LeastWishedProducts
 } from "./analytics.server";
+import styles from "./styles.css?url";
 
 // chart
 import BarChart from "./BarChart";
@@ -18,6 +20,10 @@ import Chart from "chart.js/auto";
 import { CategoryScale } from "chart.js";
 
 Chart.register(CategoryScale);
+
+export const links: LinksFunction = () => [
+  { rel: "stylesheet", href: styles }
+]
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { session } = await authenticate.admin(request);
@@ -46,29 +52,60 @@ export default function Index() {
     return <h1>Something went wrong...</h1>
   }
 
-  // TODO: Map out the product name to total wishlists
+  const mostConvertingDataset = mostConverting.map(({ productName, totalWishlists }) => ({ label: productName as string, data: totalWishlists }));
+  const leastWishedDataset = leastWished.map(({ productName, totalWishlists }) => ({ label: productName as string, data: totalWishlists }));
+  const mostWishedDataset = mostWished.map(({ productName, totalWishlists }) => ({ label: productName as string, data: totalWishlists }));
 
   return (
     <Page>
       <Text as="h2" variant="headingXl">Dashboard</Text>
-      <BarChart
-        label="Wishlists"
-        title="Most popular wishlists"
-        chartData={[
-          {
-            label: "Skateboard",
-            data: 15
-          },
-          {
-            label: "T-shirt",
-            data: 8
-          },
-          {
-            label: "Phone case",
-            data: 5
-          }
-        ]}
-      />
+      {
+        mostConvertingDataset.length > 0
+          ? (
+            <BarChart
+              label="Wishlists"
+              title="Most converting wishlists"
+              chartData={mostConvertingDataset}
+            />
+          ) : (
+            <Card>
+              <Text as="h3" variant="headingLg">Most Converting wishlists</Text>
+              <Text as="p">No Data...</Text>
+            </Card>
+          )
+      }
+      <div className="popularity-graphs-container">
+        {
+          mostWishedDataset.length > 0
+            ? (
+              <BarChart
+                label="Wishlists"
+                title="Most popular wishlists"
+                chartData={mostWishedDataset}
+              />
+            ) : (
+              <Card>
+                <Text as="h3" variant="headingLg">Most Popular wishlists</Text>
+                <Text as="p">No Data...</Text>
+              </Card>
+            )
+        }
+        {
+          leastWishedDataset.length > 0
+            ? (
+              <BarChart
+                label="Wishlists"
+                title="least popular wishlists"
+                chartData={leastWishedDataset}
+              />
+            ) : (
+              <Card>
+                <Text as="h3" variant="headingLg">Least Converting wishlists</Text>
+                <Text as="p">No Data...</Text>
+              </Card>
+            )
+        }
+      </div>
     </Page>
   );
 }

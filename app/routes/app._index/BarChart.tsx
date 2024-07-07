@@ -1,7 +1,7 @@
 import type { ChartData } from "chart.js";
 import { Bar } from "react-chartjs-2";
 
-interface BarChartData {
+export interface BarChartData {
     label: string;
     data: number;
 }
@@ -26,20 +26,23 @@ export default function BarChart({ chartData, label, title }: BarChartProps) {
     };
 
     return (
-        <Bar
-            data={data}
-            options={{
-                plugins: {
-                    title: {
-                        display: true,
-                        text: title
+        <div>
+            <Bar
+                data={data}
+                options={{
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: title
+                        },
+                        legend: {
+                            display: false
+                        }
                     },
-                    legend: {
-                        display: false
-                    }
-                },
-                indexAxis: 'y'
-            }}
-        />
+                    indexAxis: 'y',
+                    responsive: true,
+                }}
+            />
+        </div>
     );
 };
