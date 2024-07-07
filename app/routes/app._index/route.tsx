@@ -5,7 +5,7 @@ import {
   Text,
 } from "@shopify/polaris";
 import { authenticate } from "../../shopify.server";
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData, useRouteError } from "@remix-run/react";
 import {
   top10ConvertingWishedProducts,
   top10MostWishedProducts,
@@ -23,9 +23,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { session } = await authenticate.admin(request);
 
   try {
-    const mostConverting = top10ConvertingWishedProducts(session.shop);
-    const mostWished = top10MostWishedProducts(session.shop);
-    const leastWished = top10LeastWishedProducts(session.shop);
+    const mostConverting = await top10ConvertingWishedProducts(session.shop);
+    const mostWished = await top10MostWishedProducts(session.shop);
+    const leastWished = await top10LeastWishedProducts(session.shop);
     return json({
       mostConverting,
       mostWished,
@@ -34,13 +34,19 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   } catch (error) {
       // TODO: Logger
       console.error(error);
-      return json({ error: 'Internal server error' }, { status: 500 });
+      throw new Response("Internal Server Error", { status: 500 });
   }
 };
 
 export default function Index() {
-  // const data = useLoaderData<typeof loader>();
-  // console.log(data);
+  const { mostConverting, leastWished, mostWished } = useLoaderData<typeof loader>();
+
+  const error = useRouteError();
+  if (error) {
+    return <h1>Something went wrong...</h1>
+  }
+
+  // TODO: Map out the product name to total wishlists
 
   return (
     <Page>
