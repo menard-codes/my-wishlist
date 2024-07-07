@@ -1,13 +1,7 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
-// Note that some adapters may set a maximum length for the String type by default, please ensure your strings are long
-// enough when changing adapters.
-// See https://www.prisma.io/docs/orm/reference/prisma-schema-reference#string for more information
 datasource db {
   provider = "sqlite"
   url      = "file:dev.sqlite"
@@ -35,6 +29,7 @@ model WishedProducts {
   productId     String
   customerId    String
   shopDomain    String
+  productName   String
   createdAt     DateTime  @default(now())
   isAddedToCart Boolean
   addToCartDate DateTime?
@@ -53,10 +48,10 @@ model WishlistButtonSettings {
   marginBottom  Int     @default(0)
   marginLeft    Int     @default(0)
   marginRight   Int     @default(0)
-  alignment     String // left | center | right
+  alignment     String
 }
 
 model WishlistSettings {
   shopDomain String @id
-  format     String // list | grid
+  format     String
 }
