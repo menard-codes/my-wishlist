@@ -1,17 +1,37 @@
-<button class="wishlist-btn">
-  <svg
-    class="wishlist-icon"
-    viewBox="0 0 24 24"
-    stroke-width="2"
-    stroke="#000"
-    fill="#fff"
-  >
-    <path d="M12 21.35l-1.45-1.32C5.4 15.73 2 12.27 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.77-3.4 7.23-8.55 11.53L12 21.35z"/>
-  </svg>
-  {% if block.settings.show_label %}
-    <span>{{ block.settings.wishlist_label | default: 'Add to Wishlist' }}</span>
-  {% endif %}
-</button>
+<div
+  x-data="
+    {
+      wishlisted: false,
+
+      setWishlisted() {
+        this.wishlisted = !this.wishlisted;
+        // TODO: Send network requests to my API.
+        // conditional: wishlisted ? POST : DELETE
+      },
+      fetchWishlisted() {
+        // TODO: fetch wishlisted from my API and set the wishlisted state
+      }
+    }
+  "
+  x-init="fetchWishlisted()"
+>
+  <button class="wishlist-btn" @click="setWishlisted()">
+    <svg
+      class="wishlist-icon"
+      viewBox="0 0 24 24"
+      stroke-width="2"
+      :stroke="wishlisted ? '{{ block.settings.wishlisted_outline }}' : '{{ block.settings.unwishlisted_outline }}'"
+      :fill="wishlisted ? '{{ block.settings.wishlisted_fill }}' : '{{ block.settings.unwishlisted_fill }}'"
+    >
+      <path d="M12 21.35l-1.45-1.32C5.4 15.73 2 12.27 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.77-3.4 7.23-8.55 11.53L12 21.35z"/>
+    </svg>
+    {% if block.settings.show_label %}
+      <span>{{ block.settings.wishlist_label | default: 'Add to Wishlist' }}</span>
+    {% endif %}
+  </button>
+</div>
+
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
 {% schema %}
 {
@@ -50,7 +70,7 @@
     },
     {
       "type": "color",
-      "id": "unwishlisted_color",
+      "id": "unwishlisted_fill",
       "label": "Unwishlisted Fill Color",
       "default": "#fff"
     }
