@@ -1,0 +1,76 @@
+<button class="wishlist-btn">
+  <svg
+    class="wishlist-icon"
+    viewBox="0 0 24 24"
+    stroke-width="2"
+    stroke="#000"
+    fill="#fff"
+  >
+    <path d="M12 21.35l-1.45-1.32C5.4 15.73 2 12.27 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.77-3.4 7.23-8.55 11.53L12 21.35z"/>
+  </svg>
+  {% if block.settings.show_label %}
+    <span>{{ block.settings.wishlist_label | default: 'Add to Wishlist' }}</span>
+  {% endif %}
+</button>
+
+{% schema %}
+{
+  "name": "My Wishlist",
+  "target": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "wishlist_label",
+      "label": "Wishlist Label",
+      "default": "Add to Wishlist"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_label",
+      "label": "Show Wishlist Label",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "wishlisted_outline",
+      "label": "Wishlisted Outline Color",
+      "default": "#000"
+    },
+    {
+      "type": "color",
+      "id": "wishlisted_fill",
+      "label": "Wishlisted Fill Color",
+      "default": "#000"
+    },
+    {
+      "type": "color",
+      "id": "unwishlisted_outline",
+      "label": "Unwishlisted Outline Color",
+      "default": "#000"
+    },
+    {
+      "type": "color",
+      "id": "unwishlisted_color",
+      "label": "Unwishlisted Fill Color",
+      "default": "#fff"
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+  .wishlist-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    background-color: transparent;
+    margin-inline: auto;
+    border: none;
+    font-size: 1.5rem;
+  }
+
+  .wishlist-icon {
+    width: 1.5em;
+  }
+</style>
