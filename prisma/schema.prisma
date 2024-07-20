@@ -31,27 +31,10 @@ model WishedProducts {
   shopDomain    String
   productName   String
   createdAt     DateTime  @default(now())
-  isAddedToCart Boolean
+  isAddedToCart Boolean   @default(false)
   addToCartDate DateTime?
-  isPurchased   Boolean
+  isPurchased   Boolean   @default(false)
   purchaseDate  Boolean?
 
   @@id([productId, customerId, shopDomain])
-}
-
-model WishlistButtonSettings {
-  shopDomain    String  @id
-  label         String?
-  inactiveColor String
-  activeColor   String
-  marginTop     Int     @default(0)
-  marginBottom  Int     @default(0)
-  marginLeft    Int     @default(0)
-  marginRight   Int     @default(0)
-  alignment     String
-}
-
-model WishlistSettings {
-  shopDomain String @id
-  format     String
 }
