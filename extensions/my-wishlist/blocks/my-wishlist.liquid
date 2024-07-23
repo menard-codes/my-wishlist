@@ -1,21 +1,5 @@
-<div
-  x-data="
-    {
-      wishlisted: false,
-
-      setWishlisted() {
-        this.wishlisted = !this.wishlisted;
-        // TODO: Send network requests to my API.
-        // conditional: wishlisted ? POST : DELETE
-      },
-      fetchWishlisted() {
-        // TODO: fetch wishlisted from my API and set the wishlisted state
-      }
-    }
-  "
-  x-init="fetchWishlisted()"
->
-  <button class="wishlist-btn" @click="setWishlisted()">
+<div x-data="wishlist">
+  <button class="wishlist-btn" @click.debounce="setWishlisted">
     <svg
       class="wishlist-icon"
       viewBox="0 0 24 24"
@@ -32,6 +16,69 @@
 </div>
 
 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<script>
+  document.addEventListener('alpine:init', () => {
+    Alpine.data('wishlist', () => ({
+      wishlisted: false,
+      appUrl: 'https://beatles-casinos-indian-framed.trycloudflare.com',
+      init() {
+        const searchParams = new URLSearchParams();
+        searchParams.set('customerId', "{{ customer.id }}");
+        searchParams.set('productId', "{{ product.id }}");
+        searchParams.set('shopDomain', "{{ shop.permanent_domain }}");
+        const endpoint = this.appUrl + '/api/wishlist?' + searchParams.toString();
+        fetch(endpoint)
+          .then((res) => res.json())
+          .then(({ wishlisted }) => {
+            this.wishlisted = wishlisted;
+          })
+          .catch((err) => console.error(err));
+      },
+      setWishlisted() {
+        {% unless customer %}
+          alert('login first');
+          return;
+        {% endunless %}
+
+        const customerId = "{{ customer.id }}";
+        const productId = "{{ product.id }}";
+        const productName = "{{ product.title }}";
+        const shopDomain = "{{ shop.permanent_domain }}";
+
+        const searchParams = new URLSearchParams();
+        searchParams.set('customerId', customerId);
+        searchParams.set('productId', productId);
+        searchParams.set('shopDomain', shopDomain);
+        const endpoint = this.appUrl + '/api/wishlist?' + searchParams.toString();
+
+        if (!this.wishlisted) {
+          // NOTE: Optimmistic UI
+          this.wishlisted = true;
+
+          fetch(endpoint, {
+            method: "POST",
+            body: JSON.stringify({productName})
+          })
+            .then(res => res.json())
+            .then(data => {
+              console.log('added wishlist');
+            })
+            .catch(err => console.error(err));
+        } else {
+          // NOTE: Optimistic UI
+          this.wishlisted = false;
+
+          fetch(endpoint, { method: "DELETE" })
+            .then(res => res.json())
+            .then(data => {
+              console.log('removed wishlist');
+            })
+            .catch(err => console.error(err));
+        }
+      },
+    }));
+  });
+</script>
 
 {% schema %}
 {
@@ -88,6 +135,7 @@
     margin-inline: auto;
     border: none;
     font-size: 1.5rem;
+    cursor: pointer;
   }
 
   .wishlist-icon {
